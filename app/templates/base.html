@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notebook App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+<body>
+  {% block body %}
+  {% endblock %}
+
+  <!-- JS snippet to redirect from '/' to today's date -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if(window.location.pathname === "/") {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`;
+        window.location.href = `/date/${dateStr}`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="notebook-container">
+  <header class="date-header">
+    <div class="day">{{ day }}</div>
+    <div class="month-year">
+      <div class="month">{{ month }}</div>
+      <div class="year">{{ year }}</div>
+    </div>
+  </header>
+
+  <main class="content">
+    <form method="POST" id="note-form">
+      <!-- Wrap the textarea and preview in a container -->
+      <div class="text-area-container">
+        <!-- Default to hidden text area, shown only when user toggles "Write" -->
+        <textarea id="note-content" name="content" style="display:none;">
+{{ note.content }}
+        </textarea>
+
+        <!-- Default to visible preview -->
+        <div id="preview" style="display:block;">
+          {{ rendered_content|safe }}
+        </div>
+      </div>
+
+      <hr class="split">
+
+      <div class="buttons">
+        <!-- Previous day button (type="button" to avoid form submission) -->
+        <button type="button" onclick="window.location.href='/date/{{ prev_day_str }}'">
+          &lt;
+        </button>
+
+        <!-- Single toggle/write/save button (type="button") -->
+        <button id="toggle-write" type="button">WRITE</button>
+
+        <!-- Next day button (type="button" to avoid form submission) -->
+        <button type="button" onclick="window.location.href='/date/{{ next_day_str }}'">
+          &gt;
+        </button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script>
+  const toggleWriteBtn = document.getElementById('toggle-write');
+  const textArea = document.getElementById('note-content');
+  const preview = document.getElementById('preview');
+  const form = document.getElementById('note-form');
+
+  // Start in "preview" mode
+  let isEditing = false;
+
+  toggleWriteBtn.addEventListener('click', function() {
+    if (!isEditing) {
+      // Switch to edit mode
+      isEditing = true;
+      preview.style.display = 'none';
+      textArea.style.display = 'block';
+      // Change button text to "Save"
+      toggleWriteBtn.innerText = 'SAVE';
+    } else {
+      // Currently in edit mode, so "Save" was clicked
+      // Manually submit the form
+      form.submit();
+    }
+  });
+</script>
+{% endblock %}
