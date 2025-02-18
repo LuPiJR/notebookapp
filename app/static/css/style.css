@@ -1,148 +1,190 @@
 /* 
-   1) Graph-paper style background (commented out)
-   2) Centered container with a 1.6:1 aspect ratio
-   3) Rounded corners for a "page" look
-   4) Simple date styling
+   1) Basic styling
+   2) Responsive design for smaller screens
 */
 
 html, body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fdfdfd; /* fallback color */
-    /* If you want the graph-paper background, uncomment below:
-    background-image:
-      repeating-linear-gradient(#cccccc 0px, #cccccc 1px, transparent 1px, transparent 30px),
-      repeating-linear-gradient(90deg, #cccccc 0px, #cccccc 1px, transparent 1px, transparent 30px);
-    */
-    background-size: 30px 30px;
-    background-position: center center;
-  }
-  
-  /* Center the "page" container */
-  .notebook-container {
-    width: 500px;         /* approximate width */
-    height: 800px;        /* 1.6:1 ratio => 800 / 500 = 1.6 */
-    background-color: #fff;
-    margin: 50px auto;    /* center horizontally with top margin */
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  /* Date Header (top-right) */
-  .date-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;  /* align date info to the right */
-    margin-bottom: 10px;
-    margin-right: 10px;
-  }
-  
-  /* Large day in red */
-  .date-header .day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 5em;
-    color: #C40000;
-    line-height: 1;
-    font-weight: bold;
-  }
-  
-  /* Month and year in smaller text, stacked vertically */
-  .date-header .month-year {
-    margin-left: 5px;
-    line-height: 1.2;
-    width: 89px;
-  }
-  .date-header .month {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 1.2em;
-  }
-  .date-header .year {
-    font-size: 1em;
-    color: #C40000;
-    letter-spacing: 15px;
-  }
-  
-  /* 
-     Content area: 
-     Use flex layout so the text area/preview can scroll 
-     and the buttons can be pinned to the bottom.
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #fdfdfd; /* fallback color */
+  /* If you want the graph-paper background, uncomment:
+  background-image:
+    repeating-linear-gradient(#cccccc 0px, #cccccc 1px, transparent 1px, transparent 30px),
+    repeating-linear-gradient(90deg, #cccccc 0px, #cccccc 1px, transparent 1px, transparent 30px);
   */
-  .content {
-    flex: 1; /* Fill available vertical space */
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
+  background-size: 30px 30px;
+  background-position: center center;
+  /* Hide horizontal overflow in case container is slightly wide */
+  overflow-x: hidden;
+}
+
+/* 
+   Notebook container:
+   On larger screens, 500px x 800px with a 1.6:1 ratio.
+   We'll override this in a media query for smaller screens.
+*/
+.notebook-container {
+  width: 500px;
+  height: 800px; 
+  background-color: #fff;
+  margin: 50px auto;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Date Header (top-right) */
+.date-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.date-header .day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 5em;
+  color: #C40000;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.date-header .month-year {
+  margin-left: 5px;
+  line-height: 1.2;
+  width: 89px; /* for your letter-spacing trick */
+}
+
+.date-header .month {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 1.2em;
+}
+
+.date-header .year {
+  font-size: 1em;
+  color: #C40000;
+  letter-spacing: 15px;
+}
+
+/* 
+   Content area:
+   flex:1 so the text area can expand.
+*/
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* A wrapper to allow scrolling of text area or preview */
+.text-area-container {
+  flex: 1; 
+  overflow-y: auto;
+  margin-bottom: 10px;
+  height: 550px; /* can override for mobile if needed */
+}
+
+/* The editable text area */
+#note-content {
+  width: 100%;
+  height: 100%;
+  border: none;
+  resize: none;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: "Courier New", Courier, monospace;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* The preview area */
+#preview {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: "Helvetica", Arial, sans-serif;
+}
+
+/* Simple horizontal rule */
+.split {
+  width:80%;
+  text-align:center;
+  margin-bottom: 20px;
+}
+
+/* Buttons pinned at the bottom */
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: auto;
+  padding-bottom: 10px;
+}
+
+/* Consistent button style */
+.buttons button {
+  width: 100px; 
+  padding: 10px 0;
+  font-size: 14px;
+  border-style: solid;
+  border-color: #C40000;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* No hover color change for now
+.buttons button:hover {
+  background-color: #ddd;
+}
+*/
+
+/* 
+   MEDIA QUERY:
+   For screens smaller than 600px, 
+   we scale the notebook container down, 
+   reduce margins, possibly reduce font sizes.
+*/
+@media (max-width: 600px) {
+  .notebook-container {
+    width: 90vw;         /* fill most of the screen width */
+    max-width: 400px;    /* cap the width so it's not too big on small phones */
+    height: 700px;        /* let the height adjust automatically */
+    margin: 20px auto;   /* smaller top/bottom margin */
+    border-radius: 10px; /* smaller border radius for small screens */
+    padding: 15px;       /* reduce padding */
   
-  /* A wrapper to allow scrolling of text area or preview */
+  }
+
+
+  .date-header .day {
+    font-size: 3em; /* reduce the day font for smaller screens */
+  }
+
+  .date-header .month-year {
+    width: auto; /* let it size automatically */
+  }
+
   .text-area-container {
-    flex: 1;                /* take up remaining space */
-    overflow-y: auto;       /* enable scrolling */
-    margin-bottom: 10px;    /* space above the buttons */
-    height: 550px;
+    height: 470px;
   }
   
-  /* The editable text area */
-  #note-content {
-    width: 100%;
-    height: 100%;
-    border: none;
-    resize: none;
-    font-size: 16px;
-    line-height: 1.6;
-    font-family: "Courier New", Courier, monospace;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* The preview area (initially hidden) */
-  #preview {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    font-size: 16px;
-    line-height: 1.6;
-    font-family: "Helvetica", Arial, sans-serif;
-  }
- .split{
-    width:90%;
-    text-align:center;
-    margin-bottom: 20px;
-  
- }
-  /* Buttons pinned at the bottom (within the .content container) */
-  .buttons {
-    display: flex;
-    justify-content: space-evenly; /* evenly distribute space around the buttons */
-    margin-top: auto;             /* push buttons to the bottom */
-    padding-bottom: 10px;         /* extra bottom spacing if desired */
-  }
-  
-  /* Force buttons to have a consistent width */
   .buttons button {
-    width: 100px;       /* same width for both buttons */
-    padding: 10px 0;    /* vertical padding */
-    font-size: 14px;
-    border-style: solid;
-    border-color: #C40000;
-    cursor: pointer;
-    border-radius: 5px;
-    background-color: white;
-    text-align: center;
+    width: 80px; /* slightly smaller buttons on mobile */
+    font-size: 12px;
   }
-  
-  .buttons button:hover {
-    /*background-color: #ddd;*/
-  }
-  
+}
