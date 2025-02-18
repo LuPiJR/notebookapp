@@ -10,6 +10,13 @@ from .models import Note
 main_bp = Blueprint("main", __name__)
 
 
+@main_bp.route("/")
+def index():
+    # Get today's date in YYYY-MM-DD format and redirect to /date/<today>
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    return redirect(url_for("main.notebook", note_date=today_str))
+
+
 @main_bp.route("/date/<note_date>", methods=["GET", "POST"])
 def notebook(note_date):
     # Validate and parse the date
